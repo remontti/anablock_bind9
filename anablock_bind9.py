@@ -79,6 +79,16 @@ def restart_bind_service():
     except subprocess.CalledProcessError as e:
         print(f"Falha ao reiniciar o serviço Bind9: {e}")
 
+def change_permissions(directory):
+    """
+    Altera as permissões de um diretório e seu conteúdo.
+    """
+    try:
+        subprocess.run(['chown', 'bind:bind', directory, '-R'], check=True)
+        print("Permissões do diretório alteradas com sucesso.")
+    except subprocess.CalledProcessError as e:
+        print(f"Falha ao alterar as permissões do diretório: {e}")
+
 def main(var_domain):
     """
     Executa o script principal: atualiza o arquivo de versão, baixa a lista de domínios e atualiza a zona RPZ se necessário.
@@ -93,6 +103,7 @@ def main(var_domain):
         download_file(domain_list_url, domain_list_path)
         create_rpz_zone_file(domain_list_path, rpz_zone_file, var_domain)
         print("Arquivo de zona RPZ atualizado.")
+        change_permissions('/var/cache/bind/rpz/')
         restart_bind_service()
 
 if __name__ == "__main__":
