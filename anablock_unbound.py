@@ -77,7 +77,7 @@ def restart_unbound_service():
     Reinicia o serviço Unbound.
     """
     try:
-        subprocess.run(['service', 'restart', 'unbound'], check=True)
+        subprocess.run(['service', 'unbound', 'restart'], check=True)
         print("Serviço Unbound reiniciado com sucesso.")
     except subprocess.CalledProcessError as e:
         print(f"Falha ao reiniciar o serviço Unbound: {e}")
@@ -100,7 +100,7 @@ def main(var_domain):
     domain_list_url = 'https://api.anablock.net.br/api/domain/all'
     version_file_path = '/var/cache/unbound/rpz/version'
     domain_list_path = '/var/cache/unbound/rpz/domain_all'
-    rpz_zone_file = '/var/cache/unbound/rpz/db.rpz.zone.hosts'
+    rpz_zone_file = '/var/cache/unbound/rpz/db.rpz.block.zone.hosts'
 
     if download_and_update_version(version_url, version_file_path):
         download_file(domain_list_url, domain_list_path)
